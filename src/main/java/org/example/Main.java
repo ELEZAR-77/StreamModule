@@ -230,6 +230,34 @@ public class Main {
 
                 .collect(Collectors.toList());
         System.out.println(books);
-        
+
+        // 2 Задание
+
+        List<Order> childrenOrder = customers.stream()
+                .flatMap(n -> n.getOrders().stream())
+                .filter(order -> order.getProducts().stream().anyMatch(p -> p.getCategory().equals("Children's products")))
+                .toList();
+        System.out.println(childrenOrder);
+
+        // 3 Задание
+        List<Integer> sumToysPrice = Collections.singletonList(products.stream()
+                .filter(p -> p.getCategory().equals("Toys"))
+                .mapToInt(p -> p.getPrice().intValue())
+                .reduce(0, Integer::sum));
+        System.out.println(sumToysPrice);
+
+        // 4 Задание
+
+        LocalDate start = LocalDate.of(2021, 2, 1);
+        LocalDate end = LocalDate.of(2021, 4, 1);
+
+        List<Product> dateList = customers.stream()
+                .filter(c -> c.getLevel().equals(2L))
+                .flatMap(c -> c.getOrders().stream()
+                        .filter(o -> o.getOrderDate().isAfter(start) &&
+                                o.getOrderDate().isBefore(end)))
+                .flatMap(o -> o.getProducts().stream())
+                .toList();
+        System.out.println(dateList);
     }
 }
