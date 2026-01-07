@@ -259,5 +259,18 @@ public class Main {
                 .flatMap(o -> o.getProducts().stream())
                 .toList();
         System.out.println(dateList);
+
+        // 5 Задание
+        List<Product> cheapProducts = products.stream()
+                .sorted(Comparator.comparing(Product::getPrice))
+                .limit(2)
+                .toList();
+        System.out.println(cheapProducts);
+
+        //6 Задание
+        List<Order> lastOrders = customers.stream().filter(c -> c.getId() > c.getId() - 1)
+                .flatMap(c -> c.getOrders().stream().filter(o -> o.getId() ))
+
+        System.out.println(lastOrders);
     }
 }
