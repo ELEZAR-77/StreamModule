@@ -271,6 +271,76 @@ public class Main {
         List<Order> lastOrders = customers.stream().filter(c -> c.getId() > c.getId() - 1)
                 .flatMap(c -> c.getOrders().stream().filter(o -> o.getId() ))
 
-        System.out.println(lastOrders);
+        LocalDate febStart = LocalDate.of(2021, 2, 1);
+        LocalDate febEnd = LocalDate.of(2021, 2, 28);
+
+        BigDecimal ordersSum = customers.stream()
+                .flatMap(c -> c.getOrders().stream())
+                .filter(o -> o.getOrderDate().isAfter(febStart) &&
+                        o.getOrderDate().isBefore(febEnd))
+                .flatMap(o -> o.getProducts().stream())
+                .map(Product::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        System.out.println(ordersSum);
+
+        // 9 Задание
+        System.out.println();
+        System.out.println("9 Задание: ");
+
+        OptionalDouble averagePayment = customers.stream()
+                .flatMap(c -> c.getOrders().stream())
+                .filter(o -> o.getOrderDate().equals(LocalDate.of(2021, 3, 14)))
+                .flatMap(o -> o.getProducts().stream())
+                .mapToDouble(p -> p.getPrice().doubleValue())
+                .average();
+
+        System.out.println(averagePayment.orElse(0.0));
+
+        //10 Задание
+        System.out.println();
+        System.out.println("10 Задание: ");
+
+        System.out.println("Статистика из категории Books: ");
+
+        Double booksSum = customers.stream()
+                .flatMap(c -> c.getOrders().stream()
+                        .flatMap(o -> o.getProducts().stream()))
+                .filter(p -> p.getCategory().equals("Books"))
+                .mapToDouble(p -> p.getPrice().doubleValue())
+                .sum();
+        System.out.println("Сумма: " + booksSum);
+
+        OptionalDouble booksAvr = customers.stream()
+                .flatMap(c -> c.getOrders().stream()
+                        .flatMap(o -> o.getProducts().stream()))
+                .filter(p -> p.getCategory().equals("Books"))
+                .mapToDouble(p -> p.getPrice().doubleValue())
+                .average();
+        System.out.println("Cредний платеж: " + booksAvr.orElse(0.0));
+
+        OptionalDouble booksMax = customers.stream()
+                .flatMap(c -> c.getOrders().stream()
+                        .flatMap(o -> o.getProducts().stream()))
+                .filter(p -> p.getCategory().equals("Books"))
+                .mapToDouble(p -> p.getPrice().doubleValue())
+                .max();
+        System.out.println("Цена самого дорогого товара: " + booksMax.orElse(0.0));
+
+        OptionalDouble booksMin = customers.stream()
+                .flatMap(c -> c.getOrders().stream()
+                        .flatMap(o -> o.getProducts().stream()))
+                .filter(p -> p.getCategory().equals("Books"))
+                .mapToDouble(p -> p.getPrice().doubleValue())
+                .min();
+        System.out.println("Цена самого дешевого товара: " + booksMin.orElse(0.0));
+
+        long booksCount = customers.stream()
+                .flatMap(c -> c.getOrders().stream()
+                        .flatMap(o -> o.getProducts().stream()))
+                .filter(p -> p.getCategory().equals("Books"))
+                .count();
+        System.out.println("Кол-во товаров: " + booksCount);
+
+        
     }
 }
