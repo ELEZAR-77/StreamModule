@@ -341,6 +341,47 @@ public class Main {
                 .count();
         System.out.println("Кол-во товаров: " + booksCount);
 
-        
+        // 11 Задание
+        System.out.println();
+        System.out.println("11 Задание: ");
+
+        Map<Long, Integer> orderIdCount = customers.stream()
+                .flatMap(c -> c.getOrders().stream())
+                .collect(Collectors.toMap(
+                        Order::getId,
+                        o -> o.getProducts().size()
+                ));
+        for (Map.Entry<Long, Integer> i : orderIdCount.entrySet()) {
+            System.out.println(i);
+        }
+
+        // 12 Задание
+        System.out.println();
+        System.out.println("12 Задание: ");
+
+        Map<Customer, List<Order>> customersOrders = customers.stream()
+                .collect(Collectors.toMap(
+                        c -> c,
+                        c -> new ArrayList<>(c.getOrders())
+                ));
+        for (Map.Entry<Customer, List<Order>> i : customersOrders.entrySet()) {
+            System.out.println(i.getKey().getInfo() + " : " + i.getValue());
+        }
+
+        // 13 Задание
+        System.out.println();
+        System.out.println("13 Задание: ");
+
+        Map<Order, Double> orderSumProducts = customers.stream()
+                .flatMap(c -> c.getOrders().stream())
+                .collect(Collectors.toMap(
+                        o -> o,
+                        o -> o.getProducts().stream()
+                                .mapToDouble(p -> p.getPrice().doubleValue())
+                                .sum()
+                ));
+        for (Map.Entry<Order, Double> i : orderSumProducts.entrySet()) {
+            System.out.println(i.getKey().getInfo() + " : " + i.getValue());
+        }
     }
 }
