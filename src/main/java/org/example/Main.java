@@ -1,7 +1,15 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import org.example.customer.Customer;
+import org.example.order.Order;
+import org.example.product.Product;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 public class Main {
     public static void main(String[] args) {
         Product apple = new Product("Apple", "Fruits", new BigDecimal("30.0"));
@@ -29,12 +37,18 @@ public class Main {
         Product buildingBlocks = new Product("Building Blocks", "Children's products", new BigDecimal("1200.0"));
         Product coloringBook = new Product("Coloring Book", "Children's products", new BigDecimal("300.0"));
         Product kidsBackpack = new Product("Kids Backpack", "Children's products", new BigDecimal("2500.0"));
+        Product legoSet = new Product("LEGO City Set", "Toys", new BigDecimal("3500.0"));
+        Product doll = new Product("Fashion Doll", "Toys", new BigDecimal("1800.0"));
+        Product puzzle = new Product("Puzzle 1000 Pieces", "Toys", new BigDecimal("1200.0"));
+        Product remoteControlCar = new Product("Remote Control Car", "Toys", new BigDecimal("4200.0"));
+        Product boardGame = new Product("Board Game", "Toys", new BigDecimal("2500.0"));
 
         List<Product> products = List.of(
                 apple, banana, carrot, broccoli, chickenBreast, salmon,
                 milk, cheese, eggs, bread, croissant, rice, pasta,
                 orangeJuice, coffee, theHobbit, nineteenEightyFour, cleanCode,
-                laptop, headphones, toyCar, teddyBear, buildingBlocks, coloringBook, kidsBackpack
+                laptop, headphones, toyCar, teddyBear, buildingBlocks, coloringBook, kidsBackpack, legoSet, doll,
+                puzzle, remoteControlCar, boardGame
         );
 
         Order order1 = new Order(
@@ -58,22 +72,22 @@ public class Main {
                 Set.of(laptop, cleanCode, cheese)
         );
         Order order4 = new Order(
-                LocalDate.of(2026, 1, 12),
-                LocalDate.of(2026, 1, 15),
+                LocalDate.of(2021, 2, 12),
+                LocalDate.of(2021, 2, 15),
                 "В ожидании",
                 Set.of(apple, banana, bread, milk, theHobbit)
         );
 
         Order order5 = new Order(
-                LocalDate.of(2026, 1, 10),
-                LocalDate.of(2026, 1, 13),
+                LocalDate.of(2021, 1, 20),
+                LocalDate.of(2021, 1, 23),
                 "Отправлено",
-                Set.of(laptop, headphones, coffee, cleanCode)
+                Set.of(laptop, headphones, coffee, cleanCode, puzzle)
         );
 
         Order order6 = new Order(
-                LocalDate.of(2026, 1, 1),
-                LocalDate.of(2026, 1, 4),
+                LocalDate.of(2021, 3, 1),
+                LocalDate.of(2021, 3, 4),
                 "Новый",
                 Set.of(apple, milk, bread, buildingBlocks)
         );
@@ -82,14 +96,14 @@ public class Main {
                 LocalDate.of(2026, 1, 2),
                 LocalDate.of(2026, 1, 6),
                 "В обработке",
-                Set.of(banana, cheese, eggs)
+                Set.of(banana, cheese, eggs, remoteControlCar)
         );
 
         Order order8 = new Order(
                 LocalDate.of(2026, 1, 3),
                 LocalDate.of(2026, 1, 7),
                 "Отправлен",
-                Set.of(chickenBreast, rice, pasta)
+                Set.of(chickenBreast, rice, pasta, legoSet)
         );
 
         Order order9 = new Order(
@@ -117,7 +131,7 @@ public class Main {
                 LocalDate.of(2026, 1, 7),
                 LocalDate.of(2026, 1, 11),
                 "В обработке",
-                Set.of(orangeJuice, eggs, cheese)
+                Set.of(orangeJuice, eggs, cheese, doll)
         );
 
         Order order13 = new Order(
@@ -142,22 +156,22 @@ public class Main {
         );
 
         Order order16 = new Order(
-                LocalDate.of(2026, 1, 11),
-                LocalDate.of(2026, 1, 15),
+                LocalDate.of(2021, 3, 14),
+                LocalDate.of(2021, 3, 18),
                 "Новый",
                 Set.of(apple, banana, orangeJuice)
         );
 
         Order order17 = new Order(
-                LocalDate.of(2026, 1, 12),
-                LocalDate.of(2026, 1, 16),
+                LocalDate.of(2021, 3, 12),
+                LocalDate.of(2021, 3, 16),
                 "В обработке",
                 Set.of(chickenBreast, eggs)
         );
 
         Order order18 = new Order(
-                LocalDate.of(2026, 1, 13),
-                LocalDate.of(2026, 1, 17),
+                LocalDate.of(2021, 4, 15),
+                LocalDate.of(2021, 4, 17),
                 "Отправлен",
                 Set.of(salmon, rice)
         );
@@ -166,33 +180,33 @@ public class Main {
                 LocalDate.of(2026, 1, 14),
                 LocalDate.of(2026, 1, 18),
                 "Доставлен",
-                Set.of(bread, milk, cheese)
+                Set.of(bread, milk, cheese, boardGame)
         );
 
         Order order20 = new Order(
-                LocalDate.of(2026, 1, 15),
+                LocalDate.of(2021, 4, 15),
                 LocalDate.of(2026, 1, 19),
                 "Отменён",
                 Set.of(croissant, coffee)
         );
 
         Order order21 = new Order(
-                LocalDate.of(2026, 1, 16),
-                LocalDate.of(2026, 1, 20),
+                LocalDate.of(2021, 2, 1),
+                LocalDate.of(2021, 2, 20),
                 "Новый",
                 Set.of(theHobbit, apple, buildingBlocks)
         );
 
         Order order22 = new Order(
-                LocalDate.of(2026, 1, 17),
-                LocalDate.of(2026, 1, 21),
+                LocalDate.of(2021, 4, 2),
+                LocalDate.of(2026, 4, 11),
                 "В обработке",
                 Set.of(cleanCode, laptop)
         );
 
         Order order23 = new Order(
-                LocalDate.of(2026, 1, 18),
-                LocalDate.of(2026, 1, 22),
+                LocalDate.of(2026, 4, 18),
+                LocalDate.of(2021, 4, 20),
                 "Отправлен",
                 Set.of(headphones, orangeJuice)
         );
@@ -220,33 +234,42 @@ public class Main {
                 new Customer("Anton", 10L, Set.of(order21, order22, order23, order24, order25))
         );
 
-        //Задание 1
+        //1 Задание
+        System.out.println();
+        System.out.println("1 Задание: ");
 
         BigDecimal price = new BigDecimal(100);
         List<Product> books = products.stream()
-                .peek(System.out::println)
                 .filter(n -> n.getCategory().equals("Books") &&
                         (n.getPrice().compareTo(new BigDecimal("100")) > 0))
 
                 .collect(Collectors.toList());
-        System.out.println(books);
+        books.forEach(System.out::println);
 
         // 2 Задание
+        System.out.println();
+        System.out.println("2 Задание: ");
 
         List<Order> childrenOrder = customers.stream()
                 .flatMap(n -> n.getOrders().stream())
                 .filter(order -> order.getProducts().stream().anyMatch(p -> p.getCategory().equals("Children's products")))
                 .toList();
-        System.out.println(childrenOrder);
+        childrenOrder.forEach(System.out::println);
 
         // 3 Задание
+        System.out.println();
+        System.out.println("3 Задание: ");
+
         List<Integer> sumToysPrice = Collections.singletonList(products.stream()
                 .filter(p -> p.getCategory().equals("Toys"))
                 .mapToInt(p -> p.getPrice().intValue())
                 .reduce(0, Integer::sum));
-        System.out.println(sumToysPrice);
+
+        sumToysPrice.forEach(System.out::println);
 
         // 4 Задание
+        System.out.println();
+        System.out.println("4 Задание: ");
 
         LocalDate start = LocalDate.of(2021, 2, 1);
         LocalDate end = LocalDate.of(2021, 4, 1);
@@ -258,18 +281,46 @@ public class Main {
                                 o.getOrderDate().isBefore(end)))
                 .flatMap(o -> o.getProducts().stream())
                 .toList();
-        System.out.println(dateList);
+        dateList.forEach(System.out::println);
 
         // 5 Задание
+        System.out.println();
+        System.out.println("5 Задание: ");
+
         List<Product> cheapProducts = products.stream()
                 .sorted(Comparator.comparing(Product::getPrice))
                 .limit(2)
                 .toList();
-        System.out.println(cheapProducts);
+        cheapProducts.forEach(System.out::println);
 
-        //6 Задание
-        List<Order> lastOrders = customers.stream().filter(c -> c.getId() > c.getId() - 1)
-                .flatMap(c -> c.getOrders().stream().filter(o -> o.getId() ))
+        // 6 Задание
+        System.out.println();
+        System.out.println("6 Задание: ");
+
+        List<Order> lastOrders = customers.stream()
+                .flatMap(c -> c.getOrders().stream())
+                .sorted(Comparator.comparing(Order::getOrderDate).reversed())
+                .limit(3)
+                .toList();
+
+        lastOrders.forEach(System.out::println);
+
+        // 7 Задание
+        System.out.println();
+        System.out.println("7 Задание: ");
+
+        LocalDate marchDate = LocalDate.of(2021, 4, 15);
+
+        List<Order> marchOrders = customers.stream()
+                .flatMap(c -> c.getOrders().stream())
+                .filter(o -> o.getOrderDate().equals(marchDate))
+                .peek(o -> System.out.println("id: " + o.getId()))
+                .toList();
+        marchOrders.forEach(System.out::println);
+
+        // 8 Задание
+        System.out.println();
+        System.out.println("8 Задание: ");
 
         LocalDate febStart = LocalDate.of(2021, 2, 1);
         LocalDate febEnd = LocalDate.of(2021, 2, 28);
@@ -414,5 +465,8 @@ public class Main {
         for (Map.Entry<String, Product> i : expensiveProducts.entrySet()) {
             System.out.println(i);
         }
+        expensiveProducts.forEach((key, value) -> {
+            System.out.println(key + " " + value);
+        });
     }
 }
