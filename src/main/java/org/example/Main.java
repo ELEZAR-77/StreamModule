@@ -383,5 +383,36 @@ public class Main {
         for (Map.Entry<Order, Double> i : orderSumProducts.entrySet()) {
             System.out.println(i.getKey().getInfo() + " : " + i.getValue());
         }
+
+        // 14 Задание
+        System.out.println();
+        System.out.println("14 Задание: ");
+
+        Map<String, List<String>> categoryListNames = customers.stream()
+                .flatMap(c -> c.getOrders().stream()
+                        .flatMap(o -> o.getProducts().stream()))
+                .collect(Collectors.groupingBy(
+                        Product::getCategory,
+                        Collectors.mapping(Product::getName, Collectors.toList())
+                ));
+        for (Map.Entry<String, List<String>> i : categoryListNames.entrySet()) {
+            System.out.println(i);
+        }
+
+        // 15 Задание
+        System.out.println();
+        System.out.println("15 Задание: ");
+
+        Map<String, Product> expensiveProducts = customers.stream()
+                .flatMap(c -> c.getOrders().stream()
+                        .flatMap(o -> o.getProducts().stream()))
+                .collect(Collectors.toMap(
+                        Product::getCategory,
+                        p -> p,
+                        (p1, p2) -> p1.getPrice().compareTo(p2.getPrice()) >= 0 ? p1 : p2
+                ));
+        for (Map.Entry<String, Product> i : expensiveProducts.entrySet()) {
+            System.out.println(i);
+        }
     }
 }
