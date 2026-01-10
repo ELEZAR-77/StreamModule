@@ -260,25 +260,22 @@ public class Main {
         System.out.println();
         System.out.println("3 Задание: ");
 
-        List<Integer> sumToysPrice = Collections.singletonList(products.stream()
+        Double sumToysPrice = products.stream()
                 .filter(p -> p.getCategory().equals("Toys"))
-                .mapToInt(p -> p.getPrice().intValue())
-                .reduce(0, Integer::sum));
+                .mapToDouble(p -> p.getPrice().doubleValue() * 0.9)
+                .sum();
 
-        sumToysPrice.forEach(System.out::println);
+        System.out.println(sumToysPrice);
 
         // 4 Задание
         System.out.println();
         System.out.println("4 Задание: ");
 
-        LocalDate start = LocalDate.of(2021, 2, 1);
-        LocalDate end = LocalDate.of(2021, 4, 1);
-
         List<Product> dateList = customers.stream()
                 .filter(c -> c.getLevel().equals(2L))
                 .flatMap(c -> c.getOrders().stream()
-                        .filter(o -> o.getOrderDate().isAfter(start) &&
-                                o.getOrderDate().isBefore(end)))
+                        .filter(o -> o.getOrderDate().isAfter(LocalDate.of(2021, 2, 1)) &&
+                                o.getOrderDate().isBefore(LocalDate.of(2021, 4, 1))))
                 .flatMap(o -> o.getProducts().stream())
                 .toList();
         dateList.forEach(System.out::println);
