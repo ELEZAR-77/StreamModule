@@ -324,8 +324,8 @@ public class Main {
 
         BigDecimal ordersSum = customers.stream()
                 .flatMap(c -> c.getOrders().stream())
-                .filter(o -> o.getOrderDate().isAfter(febStart) &&
-                        o.getOrderDate().isBefore(febEnd))
+                .filter(o -> o.getOrderDate().isAfter(LocalDate.of(2021, 2, 1)) &&
+                        o.getOrderDate().isBefore(LocalDate.of(2021, 2, 28)))
                 .flatMap(o -> o.getProducts().stream())
                 .map(Product::getPrice)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
