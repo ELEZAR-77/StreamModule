@@ -310,7 +310,7 @@ public class Main {
 
         List<Order> marchOrders = customers.stream()
                 .flatMap(c -> c.getOrders().stream())
-                .filter(o -> o.getOrderDate().equals(marchDate))
+                .filter(o -> o.getOrderDate().equals(LocalDate.of(2021, 4, 15)))
                 .peek(o -> System.out.println("id: " + o.getId()))
                 .toList();
         marchOrders.forEach(System.out::println);
