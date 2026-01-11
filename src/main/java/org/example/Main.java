@@ -306,8 +306,6 @@ public class Main {
         System.out.println();
         System.out.println("7 Задание: ");
 
-        LocalDate marchDate = LocalDate.of(2021, 4, 15);
-
         List<Order> marchOrders = customers.stream()
                 .flatMap(c -> c.getOrders().stream())
                 .filter(o -> o.getOrderDate().equals(LocalDate.of(2021, 4, 15)))
@@ -318,9 +316,6 @@ public class Main {
         // 8 Задание
         System.out.println();
         System.out.println("8 Задание: ");
-
-        LocalDate febStart = LocalDate.of(2021, 2, 1);
-        LocalDate febEnd = LocalDate.of(2021, 2, 28);
 
         BigDecimal ordersSum = customers.stream()
                 .flatMap(c -> c.getOrders().stream())
@@ -345,48 +340,45 @@ public class Main {
         System.out.println(averagePayment.orElse(0.0));
 
         //10 Задание
+        List<Product> forCompareBookCategory = customers.stream()
+                .flatMap(c -> c.getOrders().stream()
+                        .flatMap(o -> o.getProducts().stream()))
+                .filter(p -> "Books".equals(p.getCategory()))
+                .toList();
+
+        List<BigDecimal> forCompareMaxMinBookCategory = customers.stream()
+                .flatMap(c -> c.getOrders().stream()
+                        .flatMap(o -> o.getProducts().stream()))
+                .filter(p -> "Books".equals(p.getCategory()))
+                .map(Product::getPrice)
+                .toList();
+
         System.out.println();
         System.out.println("10 Задание: ");
 
         System.out.println("Статистика из категории Books: ");
 
-        Double booksSum = customers.stream()
-                .flatMap(c -> c.getOrders().stream()
-                        .flatMap(o -> o.getProducts().stream()))
-                .filter(p -> p.getCategory().equals("Books"))
+        Double booksSum = forCompareBookCategory.stream()
                 .mapToDouble(p -> p.getPrice().doubleValue())
                 .sum();
         System.out.println("Сумма: " + booksSum);
 
-        OptionalDouble booksAvr = customers.stream()
-                .flatMap(c -> c.getOrders().stream()
-                        .flatMap(o -> o.getProducts().stream()))
-                .filter(p -> p.getCategory().equals("Books"))
+        OptionalDouble booksAvr = forCompareBookCategory.stream()
                 .mapToDouble(p -> p.getPrice().doubleValue())
                 .average();
         System.out.println("Cредний платеж: " + booksAvr.orElse(0.0));
 
-        OptionalDouble booksMax = customers.stream()
-                .flatMap(c -> c.getOrders().stream()
-                        .flatMap(o -> o.getProducts().stream()))
-                .filter(p -> p.getCategory().equals("Books"))
-                .mapToDouble(p -> p.getPrice().doubleValue())
-                .max();
-        System.out.println("Цена самого дорогого товара: " + booksMax.orElse(0.0));
+        Optional<BigDecimal> booksMax = forCompareMaxMinBookCategory.stream()
+                .max(BigDecimal::compareTo);
+        System.out.println("Цена самого дорогого товара: " + booksMax);
 
-        OptionalDouble booksMin = customers.stream()
-                .flatMap(c -> c.getOrders().stream()
-                        .flatMap(o -> o.getProducts().stream()))
-                .filter(p -> p.getCategory().equals("Books"))
-                .mapToDouble(p -> p.getPrice().doubleValue())
-                .min();
-        System.out.println("Цена самого дешевого товара: " + booksMin.orElse(0.0));
+        Optional<BigDecimal> booksMin = forCompareMaxMinBookCategory.stream()
+                .min(BigDecimal::compareTo);
 
-        long booksCount = customers.stream()
-                .flatMap(c -> c.getOrders().stream()
-                        .flatMap(o -> o.getProducts().stream()))
-                .filter(p -> p.getCategory().equals("Books"))
-                .count();
+        System.out.println("Цена самого дешевого товара: " + booksMin);
+
+        long booksCount = forCompareBookCategory.size();
+
         System.out.println("Кол-во товаров: " + booksCount);
 
         // 11 Задание
@@ -465,5 +457,6 @@ public class Main {
         expensiveProducts.forEach((key, value) -> {
             System.out.println(key + " " + value);
         });
+
     }
 }
